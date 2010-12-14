@@ -1,0 +1,16 @@
+python for sl4a がIS01を始め、Android1.6搭載機で動かないのは
+知られている通り、__aeabi_dcmpun というシンボルが解決できないからであり
+それならばと、その関数をでっち上げてみたものがこのパッチである。
+
+python for sl4a のソースにこのパッチを当て、COMPILING 文書通りにビルドして
+できあがった src/android/python/bin/python をあらかじめオリジナル版を
+インストールしておいたAndorid1.6機の
+/data/data/com.googlecode.pythonforandroid/files/python/bin/python と
+入れ替える。(要ルート)
+
+なお動作確認は IS01 のみで行っているため、他機種での動作は不明。
+
+sl4a 内蔵のターミナルは SHIFT+数字キーがまともに打てないので、別の
+ターミナルアプリから利用するための python.sh を付属した。
+
+ライセンスはオリジナルに準ずる。

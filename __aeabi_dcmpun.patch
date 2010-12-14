@@ -1,0 +1,18 @@
+diff -r df7231eb4aca python/src/Modules/python.c
+--- a/python/src/Modules/python.c	Fri Nov 19 16:59:52 2010 +0100
++++ b/python/src/Modules/python.c	Tue Dec 14 09:51:09 2010 +0900
+@@ -6,6 +6,14 @@
+ #include <floatingpoint.h>
+ #endif
+ 
++#include <math.h>
++
++int
++__aeabi_dcmpun(double x, double y)
++{
++    return isunordered(x, y);
++}
++
+ int
+ main(int argc, char **argv)
+ {
