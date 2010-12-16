@@ -1,0 +1,52 @@
+--- ScriptingLayerForAndroid/src/org/connectbot/service/TerminalKeyListener.java	2010-12-12 16:29:03.500933735 +0900
++++ ScriptingLayerForAndroid.new/src/org/connectbot/service/TerminalKeyListener.java	2010-12-16 11:14:32.832861092 +0900
+@@ -30,13 +30,13 @@
+ import de.mud.terminal.VDUBuffer;
+ import de.mud.terminal.vt320;
+ 
++import java.io.IOException;
++
+ import org.connectbot.TerminalView;
+ import org.connectbot.transport.AbsTransport;
+ import org.connectbot.util.PreferenceConstants;
+ import org.connectbot.util.SelectionArea;
+ 
+-import java.io.IOException;
+-
+ /**
+  * @author kenny
+  * @author modified by raaar
+@@ -185,6 +185,11 @@
+ 
+         int key = keymap.get(keyCode, curMetaState);
+ 
++        if (keyCode == KeyEvent.KEYCODE_0 && (curMetaState & KeyEvent.META_ALT_ON) != 0
++            && (curMetaState & KeyEvent.META_SHIFT_ON) != 0) {
++          key = '|';
++        }
++
+         if ((metaState & META_CTRL_MASK) != 0) {
+           metaState &= ~META_CTRL_ON;
+           bridge.redraw();
+@@ -203,13 +208,17 @@
+           } else if (key == 0x3F) {
+             key = 0x7F;
+           }
++
++          if ((hardKeyboard && !hardKeyboardHidden) && sendFunctionKey(keyCode)) {
++            return true;
++          }
+         }
+ 
+         // handle pressing f-keys
+-        if ((hardKeyboard && !hardKeyboardHidden) && (curMetaState & KeyEvent.META_SHIFT_ON) != 0
+-            && sendFunctionKey(keyCode)) {
+-          return true;
+-        }
++        // if ((hardKeyboard && !hardKeyboardHidden) && (curMetaState & KeyEvent.META_SHIFT_ON) != 0
++        // && sendFunctionKey(keyCode)) {
++        // return true;
++        // }
+ 
+         if (key < 0x80) {
+           transport.write(key);
